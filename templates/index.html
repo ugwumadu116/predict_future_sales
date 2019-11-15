@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Future Sales Prediction</title>
+</head>
+<body>
+    <h1>Future Sale predictions</h1>
+    <p>Enter Shop Id and Item Id you want to predict</p>
+    <form method="POST" action="/predict">
+        <input type="number" name="shop_id" placeholder="Enter shop id here" required="required">
+        <input type="number" name="item_id" placeholder="Enter item id here" required="required">
+        <input type="submit" placeholder="Submit">
+    </form>
+    <br>
+    <br>
+    {{predict_text}}
+</body>
+</html>
