@@ -1,11 +1,15 @@
 import numpy as np
+import pandas as pd
 from flask import Flask, request, jsonify, render_template
 import pickle
 from sklearn.externals import joblib
 
 
-with open('new_model.pkl', 'rb') as model_file:
+with open('model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
+
+train_data = pd.read_csv("filtered.csv")
+# print(train_data)
 
 app = Flask(__name__)
 
@@ -18,10 +22,14 @@ def predict():
     """
     For handling predictions
     """
-    int_features = [34,	5,	5037,	11,	2015,	1.444444,	5037,	19,	19,	5]
-    final_features = [np.array(int_features)]
-    prediction = model.predict(final_features)
-    print(final_features)
+    int_features = [34, 5, 5037, 11, 2015, 1.444444, 5037, 19, 19, 5]
+    int_features2 = [int(x) for x in request.form.values()]
+    k_features = train_data[(train_data['item_id'] == int_features2[1]) & (train_data['shop_id'] == int_features2[0])]
+    if len(k_features) == 0:
+        return render_template('index.html', predict_text=f"Item id: %s and shop id: %s does not exits in our record" % (int_features2[1], int_features2[0]))
+    
+    # final_features = [np.array(int_features)]
+    prediction = model.predict(k_features)
     return render_template('index.html', predict_text=prediction)
 
 
